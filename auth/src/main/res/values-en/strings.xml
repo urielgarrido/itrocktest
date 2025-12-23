@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_header">Log In</string>
+    <string name="select_a_country">Select a country</string>
+    <string name="register_header">Registrate</string>
+</resources>
