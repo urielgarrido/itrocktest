@@ -1,6 +1,6 @@
 package com.example.auth.ui.utils
 
-enum class LoginProvider {
-    EMAIL,
-    GOOGLE
+sealed class LoginProvider {
+    data object Email: LoginProvider()
+    data class Google(val idToken: String): LoginProvider()
 }

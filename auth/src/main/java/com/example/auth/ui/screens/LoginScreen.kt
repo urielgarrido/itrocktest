@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.auth.R
+import com.example.auth.domain.repository.GoogleAuthClient
 import com.example.auth.ui.composables.login.CountrySelector
 import com.example.auth.ui.composables.login.LoginButton
 import com.example.auth.ui.composables.login.LoginFields
@@ -23,6 +24,7 @@ import com.example.auth.ui.composables.login.ToRegisterButton
 import com.example.auth.ui.errors.LoginError
 import com.example.auth.ui.events.LoginUIEvents
 import com.example.auth.ui.utils.LoginProvider
+import com.example.auth.ui.utils.rememberGoogleAuthClient
 
 @Composable
 fun LoginScreen(
@@ -44,6 +46,7 @@ fun LoginScreen(
     onResetLoginUIEvents: () -> Unit,
     onGoToNextScreen: () -> Unit
 ) {
+    val googleAuthClient = rememberGoogleAuthClient()
 
     DisposableEffect(loginUIEvents) {
         when (loginUIEvents) {
@@ -89,10 +92,14 @@ fun LoginScreen(
                     )
                     LoginButton(
                         enabled = loginButtonEnabled,
-                        onLogin = { onLogin(LoginProvider.EMAIL) }
+                        onLogin = { onLogin(LoginProvider.Email) }
                     )
                     LoginGoogleButton(
-                        onGoogleLogin = { onLogin(LoginProvider.GOOGLE) }
+                        onGoogleLogin = { intentResult ->
+                            val idToken = googleAuthClient.getIdTokenFromResult(intentResult)
+                            onLogin(LoginProvider.Google(idToken))
+                        },
+                        googleAuthClient = googleAuthClient
                     )
                     ToRegisterButton(
                         onRegister = onRegister

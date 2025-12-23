@@ -1,5 +1,9 @@
 package com.example.auth.ui.composables.login
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,14 +27,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.auth.R
+import com.example.auth.domain.repository.GoogleAuthClient
 
 @Composable
 fun LoginGoogleButton(
     modifier: Modifier = Modifier,
-    onGoogleLogin: () -> Unit
+    onGoogleLogin: (Intent) -> Unit,
+    googleAuthClient: GoogleAuthClient
 ) {
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            onGoogleLogin(result.data!!)
+        }
+    }
+
     OutlinedButton(
-        onClick = onGoogleLogin,
+        onClick = {
+            launcher.launch(googleAuthClient.signInIntent())
+        },
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)

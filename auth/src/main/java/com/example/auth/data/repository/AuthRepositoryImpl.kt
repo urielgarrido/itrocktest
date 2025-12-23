@@ -5,8 +5,8 @@ import com.example.auth.domain.exceptions.RegisterExceptions
 import com.example.auth.domain.repository.AuthRepository
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import javax.inject.Inject
-import kotlin.coroutines.suspendCoroutine
 import kotlin.runCatching
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -36,6 +36,22 @@ class AuthRepositoryImpl @Inject constructor(
                         throw LoginExceptions.InvalidCredentials
                     } else throw throwable
                 }
+                else -> throw throwable
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun loginWithGoogle(idToken: String): Flow<Result<Unit>> = flow {
+        runCatching {
+            val credentials = GoogleAuthProvider.getCredential(idToken, null)
+            val authResult = firebaseAuth.signInWithCredential(credentials).await()
+            if (authResult.user != null) {
+                emit(Result.success(Unit))
+            } else {
+                emit(Result.failure(LoginExceptions.InvalidCredentials))
+            }
+        }.onFailure { throwable ->
+            when(throwable) {
                 else -> throw throwable
             }
         }

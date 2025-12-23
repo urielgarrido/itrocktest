@@ -4,6 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.domain.exceptions.LoginExceptions
+import com.example.auth.domain.usecase.GoogleLoginUseCase
 import com.example.auth.domain.usecase.LoginUserUseCase
 import com.example.auth.ui.errors.LoginError
 import com.example.auth.ui.events.LoginUIEvents
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUserUseCase: LoginUserUseCase
+    private val loginUserUseCase: LoginUserUseCase,
+    private val googleLoginUseCase: GoogleLoginUseCase
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow(LoginState())
@@ -89,11 +91,34 @@ class LoginViewModel @Inject constructor(
 
     fun login(loginProvider: LoginProvider) {
         when (loginProvider) {
-            LoginProvider.EMAIL -> {
+            LoginProvider.Email -> {
                 val email = _loginState.value.email
                 val password = _loginState.value.password
                 viewModelScope.launch {
                     loginUserUseCase(email, password).onEach { result ->
+                        if (result.isSuccess) {
+                            onLoginSuccess()
+                        } else {
+                            onLoginError(LoginError.InvalidCredentials)
+                        }
+                    }.catch { throwable ->
+                        when (throwable) {
+                            is LoginExceptions.InvalidCredentials -> {
+                                onLoginError(LoginError.InvalidCredentials)
+                            }
+
+                            else -> {
+                                onLoginError(LoginError.InvalidCredentials)
+                            }
+                        }
+                    }.collect()
+                }
+            }
+
+            is LoginProvider.Google -> {
+                val idToken = loginProvider.idToken
+                viewModelScope.launch {
+                    googleLoginUseCase(idToken).onEach { result ->
                         if (result.isSuccess) {
                             onLoginSuccess()
                         } else {
@@ -110,9 +135,6 @@ class LoginViewModel @Inject constructor(
                         }
                     }.collect()
                 }
-            }
-            LoginProvider.GOOGLE -> {
-
             }
         }
     }
