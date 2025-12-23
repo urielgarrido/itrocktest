@@ -3,4 +3,23 @@
     <string name="login_header">Iniciar Sesión</string>
     <string name="select_a_country">Selecciona un país</string>
     <string name="register_header">Registrate</string>
+    <string name="invalid_email_error">Formato de email inválido.</string>
+    <string name="invalid_password_error">La contraseña debe tener más de 8 caracteres.</string>
+    <string name="invalid_credentials_error">Credenciales inválidas</string>
+    <string name="invalid_confirm_password_error">La contraseña y su confirmacion no son iguales.</string>
+    <string name="do_you_have_account">"¿Ya tienes cuenta? "</string>
+    <string name="login_button">Inicia sesión</string>
+    <string name="register_button">Registrarse</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Contraseña</string>
+    <string name="confirm_password_label">Confirmar Contraseña</string>
+    <string name="email_placeholder">ejemplo@correo.com</string>
+    <string name="hide_password_content_description">Ocultar contraseña</string>
+    <string name="show_password_content_description">Mostrar contraseña</string>
+    <string name="do_you_dont_have_account">"¿No tienes cuenta? "</string>
+    <string name="google_login_button">Continuar con Google</string>
+    <string name="google_logo_content_description">Google Logo</string>
+    <string name="register_account_successful">Tu cuenta ha sido creada correctamente. Ya puedes comenzar a usar la aplicación.</string>
+    <string name="register_account_successful_title">¡Registro Exitoso!</string>
+
 </resources>

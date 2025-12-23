@@ -3,10 +3,11 @@ package com.example.auth.ui.states
 import com.example.auth.ui.errors.LoginError
 
 data class LoginState(
-    val countries: List<String> = listOf<String>("Arg, Chi, Per"),
-    val selectedCountry: String = "",
+    val countries: List<String> = listOf("A", "B"),
+    val selectedCountry: String = countries.first(),
     val email: String = "",
     val password: String = "",
     val passwordVisible: Boolean = false,
-    val onError: LoginError? = null
+    val loginButtonEnabled: Boolean = false,
+    val error: LoginError? = null
 )

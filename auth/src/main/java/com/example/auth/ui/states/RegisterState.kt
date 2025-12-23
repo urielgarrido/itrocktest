@@ -8,5 +8,6 @@ data class RegisterState(
     val passwordVisible: Boolean = false,
     val confirmPassword: String = "",
     val confirmPasswordVisible: Boolean = false,
-    val onError: RegisterError? = null
+    val registerButtonEnabled: Boolean = false,
+    val error: RegisterError? = null
 )

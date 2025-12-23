@@ -4,10 +4,8 @@ import com.example.auth.domain.repository.AuthRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-class RegisterUserUseCase @Inject constructor(
+class IsUserLoggedInUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke(email: String, password: String): Flow<Result<Unit>> {
-        return authRepository.register(email, password)
-    }
+    operator fun invoke(): Flow<Boolean> = authRepository.isUserLoggedIn
 }

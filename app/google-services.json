@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "548650284438",
+    "project_id": "itrocktest",
+    "storage_bucket": "itrocktest.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548650284438:android:f706456332f7aa2d9819b7",
+        "android_client_info": {
+          "package_name": "com.example.testitrock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548650284438-aotscmoreqt30b056breut3qsv4flf95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhvYOOyUsxKAxJTDdGNDAwjtwUalsgXBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548650284438-aotscmoreqt30b056breut3qsv4flf95.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

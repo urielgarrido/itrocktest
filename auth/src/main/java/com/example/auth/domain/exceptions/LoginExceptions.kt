@@ -1,4 +1,5 @@
 package com.example.auth.domain.exceptions
 
-class LoginExceptions {
+sealed class LoginExceptions: Exception() {
+    data object InvalidCredentials: LoginExceptions()
 }
