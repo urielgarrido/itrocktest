@@ -1,15 +1,19 @@
 package com.example.auth.ui.viewmodel
 
+import android.content.Intent
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.domain.exceptions.LoginExceptions
+import com.example.auth.domain.repository.GoogleAuthClient
 import com.example.auth.domain.usecase.GoogleLoginUseCase
 import com.example.auth.domain.usecase.LoginUserUseCase
+import com.example.auth.domain.usecase.SelectCountryUseCase
 import com.example.auth.ui.errors.LoginError
 import com.example.auth.ui.events.LoginUIEvents
 import com.example.auth.ui.states.LoginState
 import com.example.auth.ui.utils.LoginProvider
+import com.example.core.domain.models.Country
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +27,9 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
-    private val googleLoginUseCase: GoogleLoginUseCase
+    private val googleLoginUseCase: GoogleLoginUseCase,
+    private val selectCountryUseCase: SelectCountryUseCase,
+    private val googleAuthClient: GoogleAuthClient
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow(LoginState())
@@ -32,11 +38,14 @@ class LoginViewModel @Inject constructor(
     private val _loginUIEvents = MutableStateFlow<LoginUIEvents?>(null)
     val loginUIEvents = _loginUIEvents.asStateFlow()
 
-    fun updateCountrySelected(country: String) {
+    fun updateCountrySelected(country: Country) {
         _loginState.update {
             it.copy(
                 selectedCountry = country
             )
+        }
+        viewModelScope.launch {
+            selectCountryUseCase(country)
         }
     }
 
@@ -154,4 +163,10 @@ class LoginViewModel @Inject constructor(
     fun resetLoginUIEvents() {
         _loginUIEvents.value = null
     }
+
+    fun getSignInIntent(): Intent {
+        return googleAuthClient.signInIntent()
+    }
+
+    fun getIdTokenFromResult(intentResult: Intent): String = googleAuthClient.getIdTokenFromResult(intentResult)
 }

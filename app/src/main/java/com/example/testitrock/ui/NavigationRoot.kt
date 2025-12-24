@@ -14,6 +14,12 @@ import com.example.auth.ui.screens.LoginScreen
 import com.example.auth.ui.screens.RegisterScreen
 import com.example.auth.ui.viewmodel.LoginViewModel
 import com.example.auth.ui.viewmodel.RegisterViewModel
+import com.example.products.ui.screens.HomeScreen
+import com.example.products.ui.screens.ProductDetailScreen
+import com.example.products.ui.screens.PurchaseHistoryScreen
+import com.example.products.ui.viewmodels.HomeViewModel
+import com.example.products.ui.viewmodels.ProductDetailViewModel
+import com.example.products.ui.viewmodels.PurchaseHistoryViewModel
 import com.example.testitrock.navigation.AuthNavKeys
 import com.example.testitrock.navigation.ProductNavKeys
 
@@ -55,7 +61,9 @@ fun NavigationRoot(startDestination: NavKey) {
                     onGoToNextScreen = {
                         backStack.removeLastOrNull()
                         backStack.add(ProductNavKeys.Home)
-                    }
+                    },
+                    signInIntent = loginViewModel::getSignInIntent,
+                    getIdTokenFromResult = loginViewModel::getIdTokenFromResult
                 )
             }
             entry<AuthNavKeys.Register> {
@@ -88,14 +96,25 @@ fun NavigationRoot(startDestination: NavKey) {
                     }
                 )
             }
+            entry<AuthNavKeys.Sesion> {
+                Text(text = "Sesion")
+            }
             entry<ProductNavKeys.Home> {
-                Text(text = "Home")
+                val homeViewModel = hiltViewModel<HomeViewModel>()
+                val homeState = homeViewModel.homeState.collectAsStateWithLifecycle()
+                val homeUIEvents = homeViewModel.homeUIEvents.collectAsStateWithLifecycle()
+                HomeScreen()
             }
-            entry<ProductNavKeys.Details> {
-                Text(text = "Details")
+            entry<ProductNavKeys.ProductDetail> {
+                val productDetailViewModel = hiltViewModel<ProductDetailViewModel>()
+                val productDetailState = productDetailViewModel.productDetailState.collectAsStateWithLifecycle()
+                val productDetailUIEvents = productDetailViewModel.productDetailUIEvents.collectAsStateWithLifecycle()
+                ProductDetailScreen()
             }
-            entry<ProductNavKeys.History> {
-                Text(text = "History")
+            entry<ProductNavKeys.PurchaseHistory> {
+                val purchaseHistoryViewModel = hiltViewModel<PurchaseHistoryViewModel>()
+                val purchaseHistoryState = purchaseHistoryViewModel.purchaseHistoryState.collectAsStateWithLifecycle()
+                PurchaseHistoryScreen()
             }
             entry<ProductNavKeys.Payment> {
                 Text(text = "Payment")

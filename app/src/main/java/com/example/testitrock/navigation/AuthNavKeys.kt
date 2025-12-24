@@ -8,4 +8,6 @@ sealed class AuthNavKeys {
     data object Login : AuthNavKeys(), NavKey
     @Serializable
     data object Register : AuthNavKeys(), NavKey
+    @Serializable
+    data object Sesion: AuthNavKeys(), NavKey
 }

@@ -27,13 +27,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.auth.R
-import com.example.auth.domain.repository.GoogleAuthClient
 
 @Composable
 fun LoginGoogleButton(
     modifier: Modifier = Modifier,
     onGoogleLogin: (Intent) -> Unit,
-    googleAuthClient: GoogleAuthClient
+    signInIntent: () -> Intent
 ) {
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -45,7 +44,7 @@ fun LoginGoogleButton(
 
     OutlinedButton(
         onClick = {
-            launcher.launch(googleAuthClient.signInIntent())
+            launcher.launch(signInIntent())
         },
         modifier = Modifier
             .fillMaxWidth()

@@ -11,10 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.NavKey
 import com.example.core.theme.TestITRockTheme
-import com.example.testitrock.navigation.AuthNavKeys
-import com.example.testitrock.navigation.ProductNavKeys
 import com.example.testitrock.ui.NavigationRoot
 import com.example.testitrock.ui.viewmodel.NavViewModel
 import dagger.hilt.android.AndroidEntryPoint

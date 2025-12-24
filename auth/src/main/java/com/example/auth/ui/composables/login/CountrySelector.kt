@@ -18,14 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.auth.R
+import com.example.core.domain.models.Country
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountrySelector(
     modifier: Modifier = Modifier,
-    countries: List<String>,
-    countrySelected: String,
-    onCountrySelected: (String) -> Unit
+    countries: List<Country>,
+    countrySelected: Country,
+    onCountrySelected: (Country) -> Unit
 ) {
     var expanded: Boolean by remember { mutableStateOf(false) }
 
@@ -35,7 +36,7 @@ fun CountrySelector(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         content = {
             OutlinedTextField(
-                value = countrySelected,
+                value = countrySelected.name,
                 onValueChange = {},
                 readOnly = true,
                 label = {
@@ -54,7 +55,7 @@ fun CountrySelector(
             ) {
                 countries.forEach { country ->
                     DropdownMenuItem(
-                        text = { Text(country) },
+                        text = { Text(country.name) },
                         onClick = {
                             onCountrySelected(country)
                             expanded = false

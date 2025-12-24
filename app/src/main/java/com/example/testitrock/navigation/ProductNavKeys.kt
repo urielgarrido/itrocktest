@@ -7,9 +7,9 @@ sealed class ProductNavKeys {
     @Serializable
     data object Home : ProductNavKeys(), NavKey
     @Serializable
-    data object Details : ProductNavKeys(), NavKey
+    data object ProductDetail : ProductNavKeys(), NavKey
     @Serializable
-    data object History : ProductNavKeys(), NavKey
+    data object PurchaseHistory : ProductNavKeys(), NavKey
     @Serializable
     data object Payment : ProductNavKeys(), NavKey
 }

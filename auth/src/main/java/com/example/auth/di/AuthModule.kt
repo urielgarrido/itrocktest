@@ -2,10 +2,6 @@ package com.example.auth.di
 
 import android.content.Context
 import com.example.auth.R
-import com.example.auth.data.repository.AuthRepositoryImpl
-import com.example.auth.data.repository.GoogleAuthClientImpl
-import com.example.auth.domain.repository.AuthRepository
-import com.example.auth.domain.repository.GoogleAuthClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -19,17 +15,13 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthModule {
+object AuthProvidesModule {
 
     @Provides
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
-
-    @Provides
-    @Singleton
-    fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository = AuthRepositoryImpl(firebaseAuth)
 
     @Provides
     @Singleton
@@ -52,7 +44,4 @@ object AuthModule {
         return GoogleSignIn.getClient(context, gso)
     }
 
-    @Provides
-    @Singleton
-    fun provideGoogleAuthClient(googleSignInClient: GoogleSignInClient): GoogleAuthClient = GoogleAuthClientImpl(googleSignInClient)
 }

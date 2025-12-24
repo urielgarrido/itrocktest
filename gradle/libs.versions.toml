@@ -21,6 +21,7 @@ turbine = "1.2.1"
 firebaseBom = "31.0.0"
 googleService = "4.4.4"
 google-auth = "21.1.1"
+datastore = "1.1.1"
 
 nav3Core = "1.0.0"
 lifecycleViewmodelNav3 = "2.10.0"
@@ -57,8 +58,10 @@ truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 google-play-service-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "google-auth"}
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore"}
 
 # Navigation
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
