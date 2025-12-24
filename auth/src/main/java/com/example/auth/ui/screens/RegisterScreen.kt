@@ -23,26 +23,20 @@ import com.example.auth.ui.composables.register.RegisterButton
 import com.example.auth.ui.composables.register.RegisterFields
 import com.example.auth.ui.composables.register.RegisterSuccessDialog
 import com.example.auth.ui.composables.register.ToLoginTextButton
-import com.example.auth.ui.errors.RegisterError
 import com.example.auth.ui.events.RegisterUIEvents
+import com.example.auth.ui.states.RegisterState
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    email: String,
+    registerState: RegisterState,
     onEmailChange: (String) -> Unit,
-    password: String,
     onPasswordChange: (String) -> Unit,
-    passwordVisible: Boolean,
     onPasswordVisibleChange: (Boolean) -> Unit,
-    confirmPassword: String,
     onConfirmPasswordChange: (String) -> Unit,
-    confirmPasswordVisible: Boolean,
     onConfirmPasswordVisibleChange: (Boolean) -> Unit,
     onRegister: () -> Unit,
-    isRegisterButtonEnabled: Boolean,
     toLogin: () -> Unit,
-    error: RegisterError?,
     registerUIEvents: RegisterUIEvents?,
     onResetRegisterUIEvents: () -> Unit,
     onGoToNextScreen: () -> Unit
@@ -87,21 +81,21 @@ fun RegisterScreen(
                         text = stringResource(R.string.register_header)
                     )
                     RegisterFields(
-                        email = email,
+                        email = registerState.email,
                         onEmailChange = onEmailChange,
-                        password = password,
+                        password = registerState.password,
                         onPasswordChange = onPasswordChange,
-                        passwordVisible = passwordVisible,
+                        passwordVisible = registerState.passwordVisible,
                         onPasswordVisibleChange = onPasswordVisibleChange,
-                        confirmPassword = confirmPassword,
+                        confirmPassword = registerState.confirmPassword,
                         onConfirmPasswordChange = onConfirmPasswordChange,
-                        confirmPasswordVisible = confirmPasswordVisible,
+                        confirmPasswordVisible = registerState.confirmPasswordVisible,
                         onConfirmPasswordVisibleChange = onConfirmPasswordVisibleChange,
-                        error = error
+                        error = registerState.error
                     )
                     RegisterButton(
                         onRegister = onRegister,
-                        enabled = isRegisterButtonEnabled
+                        enabled = registerState.registerButtonEnabled
                     )
                     ToLoginTextButton(
                         toLogin = toLogin

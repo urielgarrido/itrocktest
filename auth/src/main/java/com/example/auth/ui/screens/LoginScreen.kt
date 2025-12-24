@@ -21,27 +21,21 @@ import com.example.auth.ui.composables.login.LoginButton
 import com.example.auth.ui.composables.login.LoginFields
 import com.example.auth.ui.composables.login.LoginGoogleButton
 import com.example.auth.ui.composables.login.ToRegisterButton
-import com.example.auth.ui.errors.LoginError
 import com.example.auth.ui.events.LoginUIEvents
+import com.example.auth.ui.states.LoginState
 import com.example.auth.ui.utils.LoginProvider
 import com.example.core.domain.models.Country
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    countries: List<Country>,
-    countrySelected: Country,
+    loginState: LoginState,
     onCountrySelected: (Country) -> Unit,
-    email: String,
     onEmailChange: (String) -> Unit,
-    password: String,
     onPasswordChange: (String) -> Unit,
-    passwordVisible: Boolean,
     onPasswordVisibleChange: (Boolean) -> Unit,
-    loginButtonEnabled: Boolean,
     onLogin: (LoginProvider) -> Unit,
     onRegister: () -> Unit,
-    error: LoginError?,
     loginUIEvents: LoginUIEvents?,
     onResetLoginUIEvents: () -> Unit,
     onGoToNextScreen: () -> Unit,
@@ -78,21 +72,21 @@ fun LoginScreen(
                         text = stringResource(R.string.login_header)
                     )
                     CountrySelector(
-                        countries = countries,
-                        countrySelected = countrySelected,
+                        countries = loginState.countries,
+                        countrySelected = loginState.selectedCountry,
                         onCountrySelected = onCountrySelected
                     )
                     LoginFields(
-                        email = email,
+                        email = loginState.email,
                         onEmailChange = onEmailChange,
-                        password = password,
+                        password = loginState.password,
                         onPasswordChange = onPasswordChange,
-                        passwordVisible = passwordVisible,
+                        passwordVisible = loginState.passwordVisible,
                         onVisiblePasswordChange = onPasswordVisibleChange,
-                        error = error
+                        error = loginState.error
                     )
                     LoginButton(
-                        enabled = loginButtonEnabled,
+                        enabled = loginState.loginButtonEnabled,
                         onLogin = { onLogin(LoginProvider.Email) }
                     )
                     LoginGoogleButton(

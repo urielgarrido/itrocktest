@@ -26,8 +26,9 @@ class MainActivity : ComponentActivity() {
             TestITRockTheme {
                 val navigationViewModel = hiltViewModel<NavViewModel>()
                 val startDestination = navigationViewModel.startDestination.collectAsStateWithLifecycle()
+                val userUID = navigationViewModel.userUID.collectAsStateWithLifecycle()
                 if (startDestination.value != null) {
-                    NavigationRoot(startDestination.value!!)
+                    NavigationRoot(startDestination.value!!, userUID.value)
                 } else {
                     Box(
                         modifier = Modifier.fillMaxSize(),

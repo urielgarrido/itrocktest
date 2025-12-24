@@ -2,7 +2,6 @@ package com.example.products.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.products.domain.usecases.BuyProductUseCase
 import com.example.products.domain.usecases.GetProductDetailUseCase
 import com.example.products.ui.errors.ProductDetailError
 import com.example.products.ui.events.ProductDetailUIEvents
@@ -19,8 +18,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
-    private val getProductDetailUseCase: GetProductDetailUseCase,
-    private val buyProductUseCase: BuyProductUseCase
+    private val getProductDetailUseCase: GetProductDetailUseCase
 ) : ViewModel() {
 
     private val _productDetailState = MutableStateFlow(ProductDetailState())
@@ -46,34 +44,6 @@ class ProductDetailViewModel @Inject constructor(
                     }
                 }
             }.collect()
-        }
-    }
-
-    fun buyProduct(userUID: String) {
-        val product = _productDetailState.value.product
-        if (product != null) {
-            viewModelScope.launch {
-                buyProductUseCase(product, userUID).onEach { result ->
-                    if (result.isSuccess) {
-                        onProductBuy()
-                    } else {
-                        onProductDetailError(ProductDetailError.BuyProductError)
-                    }
-                }.catch { throwable ->
-                    when (throwable) {
-                        else -> {
-                            onProductDetailError(ProductDetailError.BuyProductError)
-                        }
-                    }
-                }.collect()
-            }
-        }
-    }
-
-    fun onProductBuy() {
-        val product = _productDetailState.value.product
-        if (product != null) {
-            _productDetailUIEvents.value = ProductDetailUIEvents.OnProductBuy(product)
         }
     }
 

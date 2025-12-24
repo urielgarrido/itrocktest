@@ -8,6 +8,7 @@ fun FakeStoreProductDto.toDomain(): Product {
     return Product(
         id = id,
         name = title,
+        description = description,
         price = price,
         imageUrl = imageUrl
     )
@@ -17,6 +18,7 @@ fun FakePlatziProductDto.toDomain(): Product {
     return Product(
         id = id,
         name = title,
+        description = description,
         price = price,
         imageUrl = images.first()
     )

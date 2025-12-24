@@ -7,7 +7,7 @@ sealed class ProductNavKeys {
     @Serializable
     data object Home : ProductNavKeys(), NavKey
     @Serializable
-    data object ProductDetail : ProductNavKeys(), NavKey
+    data class ProductDetail(val productId: Long) : ProductNavKeys(), NavKey
     @Serializable
     data object PurchaseHistory : ProductNavKeys(), NavKey
     @Serializable

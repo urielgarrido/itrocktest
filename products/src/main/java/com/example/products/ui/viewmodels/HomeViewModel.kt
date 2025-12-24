@@ -48,7 +48,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onProductClicked(id: Long) {
+    fun onProductClick(id: Long) {
         _homeUIEvents.value = HomeUIEvents.OnProductClicked(id)
     }
 

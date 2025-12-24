@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="product_image_content_description">Image of %s</string>
+    <string name="get_products_error">Error al obtener los productos</string>
+    <string name="get_products_detail_error">No se pudo obtener el detalle del producto seleccionado</string>
+    <string name="buy_product_button">Comprar</string>
+</resources>
