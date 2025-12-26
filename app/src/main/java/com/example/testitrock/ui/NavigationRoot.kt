@@ -128,7 +128,8 @@ fun NavigationRoot(
                                 backStack.add(ProductNavKeys.Home)
                             },
                             signInIntent = loginViewModel::getSignInIntent,
-                            getIdTokenFromResult = loginViewModel::getIdTokenFromResult
+                            getIdTokenFromResult = loginViewModel::getIdTokenFromResult,
+                            onResetErrorState = loginViewModel::resetLoginError
                         )
                     }
                     entry<AuthNavKeys.Register> {

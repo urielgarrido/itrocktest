@@ -9,6 +9,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.auth.R
 import com.example.auth.ui.composables.login.CountrySelector
 import com.example.auth.ui.composables.login.LoginButton
+import com.example.auth.ui.composables.login.LoginErrorDialog
 import com.example.auth.ui.composables.login.LoginFields
 import com.example.auth.ui.composables.login.LoginGoogleButton
 import com.example.auth.ui.composables.login.ToRegisterButton
@@ -42,7 +47,9 @@ fun LoginScreen(
     onGoToNextScreen: () -> Unit,
     signInIntent: () -> Intent,
     getIdTokenFromResult: (Intent) -> String,
+    onResetErrorState: () -> Unit
 ) {
+    var showLoginErrorDialog by rememberSaveable { mutableStateOf(false) }
 
     DisposableEffect(loginUIEvents) {
         when (loginUIEvents) {
@@ -57,7 +64,14 @@ fun LoginScreen(
     }
 
     if (loginState.error == LoginError.UnknownError) {
+        showLoginErrorDialog = true
+    }
 
+    if (showLoginErrorDialog) {
+        LoginErrorDialog(onDismiss = {
+            onResetErrorState()
+            showLoginErrorDialog = false
+        })
     }
 
     Scaffold(

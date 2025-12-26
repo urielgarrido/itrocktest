@@ -157,6 +157,14 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun resetLoginError() {
+        _loginState.update {
+            it.copy(
+                error = null
+            )
+        }
+    }
+
     private fun onLoginSuccess() {
         _loginUIEvents.value = LoginUIEvents.OnLoginSuccess
     }

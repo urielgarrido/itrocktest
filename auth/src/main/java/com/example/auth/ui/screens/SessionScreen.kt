@@ -76,7 +76,7 @@ fun SessionScreen(
                     Text(
                         modifier = Modifier.align(Alignment.Start),
                         style = MaterialTheme.typography.titleMedium,
-                        text = sessionState.userEmail ?: stringResource(R.string.without_email)
+                        text = sessionState.userEmail
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(

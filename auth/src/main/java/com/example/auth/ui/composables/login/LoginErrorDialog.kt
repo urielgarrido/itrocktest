@@ -20,7 +20,7 @@ fun LoginErrorDialog(modifier: Modifier = Modifier, onDismiss: () -> Unit) {
         },
         confirmButton = {
             Button(
-                onClick = { onDismiss() }
+                onClick = onDismiss
             ) {
                 Text(stringResource(com.example.core.R.string.accept_button))
             }
