@@ -26,5 +26,7 @@
     <string name="without_email">Sin email</string>
     <string name="login_error_title">¡Error!</string>
     <string name="login_error_message">Ocurrió un error inesperado.\nIntenta nuevamente más tarde</string>
+    <string name="logout_error">Ocurrió un error al querer cerrar sesión.</string>
+    <string name="get_email_error">No se pudo obtener su email</string>
 
 </resources>

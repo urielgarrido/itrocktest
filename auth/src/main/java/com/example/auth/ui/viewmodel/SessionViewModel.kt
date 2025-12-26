@@ -32,10 +32,14 @@ class SessionViewModel @Inject constructor(
     fun getUserEmail() {
         viewModelScope.launch {
             getUserEmailUseCase().onEach { userEmail ->
-                _sessionState.update {
-                    it.copy(
-                        userEmail = userEmail
-                    )
+                if (userEmail != null) {
+                    _sessionState.update {
+                        it.copy(
+                            userEmail = userEmail
+                        )
+                    }
+                } else {
+                    onSessionError(SessionError.OnGetEmailError)
                 }
             }.catch { throwable ->
                 when (throwable) {

@@ -25,4 +25,6 @@
     <string name="without_email">No email</string>
     <string name="login_error_title">Error!</string>
     <string name="login_error_message">An unexpected error occurred.\nPlease try again later</string>
+    <string name="logout_error">An error occurred while trying to log out.</string>
+    <string name="get_email_error">We could not obtain your email.</string>
 </resources>
