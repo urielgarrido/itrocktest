@@ -20,6 +20,6 @@ fun FakePlatziProductDto.toDomain(): Product {
         name = title,
         description = description,
         price = price,
-        imageUrl = images.first()
+        imageUrl = images.firstOrNull() ?: ""
     )
 }

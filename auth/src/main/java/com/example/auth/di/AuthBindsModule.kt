@@ -4,6 +4,8 @@ import com.example.auth.data.repository.AuthRepositoryImpl
 import com.example.auth.data.repository.GoogleAuthClientImpl
 import com.example.auth.domain.repository.AuthRepository
 import com.example.auth.domain.repository.GoogleAuthClient
+import com.example.auth.domain.validation.EmailValidator
+import com.example.auth.ui.utils.AndroidEmailValidator
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,4 +27,11 @@ abstract class AuthBindsModule {
     abstract fun bindGoogleAuthClient(
         googleAuthClientImpl: GoogleAuthClientImpl
     ): GoogleAuthClient
+
+    @Binds
+    @Singleton
+    abstract fun bindEmailValidator(
+        androidEmailValidator: AndroidEmailValidator
+    ): EmailValidator
+
 }

@@ -34,10 +34,9 @@ class PaymentViewModel @Inject constructor(
 
     fun updateCardNumber(cardNumber: String) {
         val cleanedCardNumber = cardNumber.filter { it.isDigit() }
-        if (cleanedCardNumber.length <= 16) {
-            _paymentState.update { it.copy(cardNumber = cleanedCardNumber) }
-            checkFields()
-        }
+        val truncatedCardNumber = cleanedCardNumber.take(16)
+        _paymentState.update { it.copy(cardNumber = truncatedCardNumber) }
+        checkFields()
     }
 
     fun updateCardHolder(cardHolder: String) {
@@ -47,17 +46,15 @@ class PaymentViewModel @Inject constructor(
 
     fun updateExpirationDate(expirationDate: String) {
         val cleanedDate = expirationDate.filter { it.isDigit() }
-        if (cleanedDate.length <= 4) {
-            _paymentState.update { it.copy(expirationDate = cleanedDate) }
-            checkFields()
-        }
+        val truncatedDate = cleanedDate.take(4)
+        _paymentState.update { it.copy(expirationDate = truncatedDate) }
+        checkFields()
     }
 
     fun updateCVV(cvv: String) {
-        if (cvv.length <= 3) {
-            _paymentState.update { it.copy(cvv = cvv) }
-            checkFields()
-        }
+        val truncatedCVV = cvv.take(3)
+        _paymentState.update { it.copy(cvv = truncatedCVV) }
+        checkFields()
     }
 
     fun updateCVVVisible(cvvVisible: Boolean) {

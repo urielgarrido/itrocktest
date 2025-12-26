@@ -1,12 +1,10 @@
 package com.example.auth.ui.viewmodel
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.domain.usecase.RegisterUserUseCase
-import com.example.auth.ui.errors.LoginError
+import com.example.auth.domain.validation.EmailValidator
 import com.example.auth.ui.errors.RegisterError
-import com.example.auth.ui.events.LoginUIEvents
 import com.example.auth.ui.events.RegisterUIEvents
 import com.example.auth.ui.states.RegisterState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +19,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerUserUseCase: RegisterUserUseCase
+    private val registerUserUseCase: RegisterUserUseCase,
+    private val emailValidator: EmailValidator
 ) : ViewModel() {
 
     private val _registerState = MutableStateFlow(RegisterState())
@@ -68,7 +67,7 @@ class RegisterViewModel @Inject constructor(
         val password = _registerState.value.password
         val confirmPassword = _registerState.value.confirmPassword
 
-        val emailIsValid = Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
+        val emailIsValid = emailValidator.isValid(email)
         val passwordIsValid = password.length > 8 && password.isNotEmpty()
         val confirmPasswordIsValid = confirmPassword.length > 8 && confirmPassword.isNotEmpty() && password == confirmPassword
 

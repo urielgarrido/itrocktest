@@ -1,7 +1,6 @@
 package com.example.auth.ui.viewmodel
 
 import android.content.Intent
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.domain.exceptions.LoginExceptions
@@ -9,6 +8,7 @@ import com.example.auth.domain.repository.GoogleAuthClient
 import com.example.auth.domain.usecase.GoogleLoginUseCase
 import com.example.auth.domain.usecase.LoginUserUseCase
 import com.example.auth.domain.usecase.SelectCountryUseCase
+import com.example.auth.domain.validation.EmailValidator
 import com.example.auth.ui.errors.LoginError
 import com.example.auth.ui.events.LoginUIEvents
 import com.example.auth.ui.states.LoginState
@@ -29,7 +29,8 @@ class LoginViewModel @Inject constructor(
     private val loginUserUseCase: LoginUserUseCase,
     private val googleLoginUseCase: GoogleLoginUseCase,
     private val selectCountryUseCase: SelectCountryUseCase,
-    private val googleAuthClient: GoogleAuthClient
+    private val googleAuthClient: GoogleAuthClient,
+    private val emailValidator: EmailValidator
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow(LoginState())
@@ -79,7 +80,7 @@ class LoginViewModel @Inject constructor(
         val email = _loginState.value.email
         val password = _loginState.value.password
 
-        val emailIsValid = Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
+        val emailIsValid = emailValidator.isValid(email)
         val passwordIsValid = password.length > 8 && password.isNotEmpty()
 
         val error = when {

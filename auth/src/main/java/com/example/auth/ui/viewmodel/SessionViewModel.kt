@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.domain.usecase.GetUserEmailUseCase
 import com.example.auth.domain.usecase.LogoutUserUseCase
+import com.example.auth.ui.errors.SessionError
 import com.example.auth.ui.events.SessionUIEvents
 import com.example.auth.ui.states.SessionState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +39,7 @@ class SessionViewModel @Inject constructor(
                 }
             }.catch { throwable ->
                 when (throwable) {
-                    else -> throw throwable
+                    else -> onSessionError(SessionError.OnGetEmailError)
                 }
             }.collect()
         }
@@ -49,13 +50,23 @@ class SessionViewModel @Inject constructor(
             logoutUserUseCase().onEach { result ->
                 if (result.isSuccess) {
                     onLogout()
+                } else {
+                    onSessionError(SessionError.OnLogoutError)
                 }
             }.catch { throwable ->
                 when (throwable) {
-                    else -> throw throwable
+                    else -> onSessionError(SessionError.OnLogoutError)
                 }
             }.collect()
 
+        }
+    }
+
+    private fun onSessionError(error: SessionError) {
+        _sessionState.update {
+            it.copy(
+                error = error
+            )
         }
     }
 
