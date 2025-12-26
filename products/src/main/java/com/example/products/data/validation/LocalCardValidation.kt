@@ -11,7 +11,7 @@ class LocalCardValidation @Inject constructor(): CardValidator {
             card.cardNumber != "1111222233334444" ->
                 CardValidationResult.Error
 
-            card.cardHolder.uppercase() != "URIEL GARRIDO" ->
+            card.cardHolder.uppercase().trim() != "URIEL GARRIDO" ->
                 CardValidationResult.Error
 
             card.expirationDate != "0930" ->
