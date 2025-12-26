@@ -34,6 +34,13 @@ import com.example.products.ui.viewmodels.PurchaseHistoryViewModel
 import com.example.testitrock.navigation.AuthNavKeys
 import com.example.testitrock.navigation.ProductNavKeys
 import com.example.testitrock.ui.models.bottomItems
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+
 
 @Composable
 fun NavigationRoot(
@@ -76,6 +83,27 @@ fun NavigationRoot(
                     rememberSaveableStateHolderNavEntryDecorator(),
                     rememberViewModelStoreNavEntryDecorator()
                 ),
+                popTransitionSpec = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> -fullWidth / 2 },
+                        animationSpec = tween(300)
+                    ) + fadeIn(animationSpec = tween(300)) togetherWith
+                            slideOutHorizontally(
+                                targetOffsetX = { fullWidth -> fullWidth },
+                                animationSpec = tween(300)
+                            ) + fadeOut(animationSpec = tween(300))
+                },
+                transitionSpec = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(300)
+                    ) + fadeIn(animationSpec = tween(300)) togetherWith
+                            slideOutHorizontally(
+                                targetOffsetX = { fullWidth -> -fullWidth / 2 },
+                                animationSpec = tween(300)
+                            ) + fadeOut(animationSpec = tween(300))
+
+                },
                 entryProvider = entryProvider {
                     entry<AuthNavKeys.Login> {
                         val loginViewModel = hiltViewModel<LoginViewModel>()
