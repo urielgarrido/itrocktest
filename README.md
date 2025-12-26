@@ -75,7 +75,7 @@ git clone https://github.com/urielgarrido/itrocktest.git
 * Email: uriel@uriel.com
 * Password: urieluriel
 
-### 3. Datos para Tarjeta
+### 4. Datos para Tarjeta
 * Número: 1111222233334444
 * Titular: Uriel Garrido
 * Fecha de expiración: 0930
