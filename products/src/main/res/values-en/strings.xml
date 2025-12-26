@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="product_image_content_description">Image of %s</string>
-    <string name="get_products_error">Error al obtener los productos</string>
-    <string name="get_products_detail_error">No se pudo obtener el detalle del producto seleccionado</string>
-    <string name="buy_product_button">Comprar</string>
+    <string name="get_products_error">Error getting products</string>
+    <string name="get_products_detail_error">Could not get the detail of the selected product</string>
+    <string name="buy_product_button">Buy</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="payment_title">Card Payment</string>
+    <string name="card_number_field_label">Card Number</string>
+    <string name="card_holder_field_label">Cardholder Name</string>
+    <string name="expiration_date_field_label">MM/YY</string>
+    <string name="cvv_field_label">CVV</string>
+    <string name="hide_cvv_content_description">Hide CVV</string>
+    <string name="show_cvv_content_description">Show CVV</string>
+    <string name="payment_buy_successful_title">Purchase Successful!</string>
+    <string name="payment_buy_successful">You have purchased your product successfully</string>
+    <string name="get_purchase_error">We got an error trying to fetch your purchase history.\nTry again later</string>
+    <string name="purchase_status">Status: %1$s</string>
+    <string name="purchase_date">Purchase date: %1$s</string>
+    <string name="completed">Completed</string>
+    <string name="validate_card_title">Card Validation</string>
+    <string name="validate_card_error">The entered card is not valid for payment</string>
+    <string name="buy_product_error">An error occurred while trying to buy the product</string>
 </resources>

@@ -4,4 +4,21 @@
     <string name="get_products_error">Error al obtener los productos</string>
     <string name="get_products_detail_error">No se pudo obtener el detalle del producto seleccionado</string>
     <string name="buy_product_button">Comprar</string>
+    <string name="unknown_error">Error desconocido</string>
+    <string name="payment_title">Pago con Tarjeta</string>
+    <string name="card_number_field_label">Número de Tarjeta</string>
+    <string name="card_holder_field_label">Nombre del Titular</string>
+    <string name="expiration_date_field_label">MM/AA</string>
+    <string name="cvv_field_label">CVV</string>
+    <string name="hide_cvv_content_description">Ocultar CVV</string>
+    <string name="show_cvv_content_description">Mostrar CVV</string>
+    <string name="payment_buy_successful_title">¡Compra Exitosa!</string>
+    <string name="payment_buy_successful">Adquiriste tu producto satisfactoriamente</string>
+    <string name="get_purchase_error">Obtuvimos un error al intentar traer tu historial de compras.\nIntentalo más tarde</string>
+    <string name="purchase_status">Status: %1$s</string>
+    <string name="purchase_date">Fecha de compra: %1$s</string>
+    <string name="completed">Completada</string>
+    <string name="validate_card_title">Validación de Tarjeta</string>
+    <string name="validate_card_error">La tarjeta ingresada no es válida para pagar</string>
+    <string name="buy_product_error">Ocurrió un error al querer comprar el producto</string>
 </resources>

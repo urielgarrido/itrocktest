@@ -6,13 +6,13 @@ import com.example.testitrock.navigation.AuthNavKeys
 import com.example.testitrock.navigation.ProductNavKeys
 
 data class BottomItem(
-    val route: NavKey,
+    val routes: List<NavKey>,
     val icon: Int,
     val label: String
 )
 
 val bottomItems = listOf(
-    BottomItem(ProductNavKeys.Home, R.drawable.home, "Home"),
-    BottomItem(ProductNavKeys.PurchaseHistory, R.drawable.list, "Historial"),
-    BottomItem(AuthNavKeys.Sesion, R.drawable.person, "Sesión")
+    BottomItem(listOf(ProductNavKeys.Home, ProductNavKeys.ProductDetail(1), ProductNavKeys.Payment(1)), R.drawable.home, "Home"),
+    BottomItem(listOf(ProductNavKeys.PurchaseHistory), R.drawable.list, "Historial"),
+    BottomItem(listOf(AuthNavKeys.Sesion), R.drawable.person, "Sesión")
 )

@@ -2,6 +2,7 @@ package com.example.products.ui.composables.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,7 +19,10 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.products.R
 import com.example.products.domain.models.Product
@@ -31,40 +35,50 @@ fun ProductItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .height(260.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
-        content = {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                content = {
-                    AsyncImage(
-                        modifier = Modifier
-                            .size(64.dp),
-                        model = product.imageUrl,
-                        contentDescription = stringResource(id = R.string.product_image_content_description, product.name),
-                        contentScale = ContentScale.FillBounds,
-                        alignment = Alignment.Center,
-                        placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
-                        error = ColorPainter(Color.Gray),
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = product.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "$${product.price}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .size(128.dp),
+                model = product.imageUrl,
+                contentDescription = stringResource(id = R.string.product_image_content_description, product.name),
+                contentScale = ContentScale.FillBounds,
+                alignment = Alignment.Center,
+                placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceVariant),
+                error = ColorPainter(Color.Gray),
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = product.name,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Text(
+                text = "$${product.price}",
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center
             )
         }
-    )
+    }
 }

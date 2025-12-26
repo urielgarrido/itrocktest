@@ -19,10 +19,9 @@ import com.example.products.ui.states.ProductDetailState
 @Composable
 fun ProductDetailScreen(
     modifier: Modifier = Modifier,
-    productId: Long,
     productDetailState: ProductDetailState,
     productDetailUIEvents: ProductDetailUIEvents?,
-    getProductDetail: (Long) -> Unit,
+    getProductDetail: () -> Unit,
     onProductWant: () -> Unit,
     onResetProductDetailUIEvents: () -> Unit,
     onGoToPayment: () -> Unit
@@ -40,7 +39,7 @@ fun ProductDetailScreen(
     }
 
     LaunchedEffect(Unit) {
-        getProductDetail(productId)
+        getProductDetail()
     }
 
     Box(
@@ -55,13 +54,13 @@ fun ProductDetailScreen(
                 productDetailState.error != null -> {
                     val errorMessage = when(productDetailState.error) {
                         ProductDetailError.GetProductDetailError -> stringResource(R.string.get_products_detail_error)
-                        else -> "Error desconocido"
                     }
                     ErrorBanner(errorMessage = errorMessage)
                 }
-                else -> {
+
+                productDetailState.product != null -> {
                     ProductDetail(
-                        product = productDetailState.product!!,
+                        product = productDetailState.product,
                         onBuyClick = onProductWant
                     )
                 }

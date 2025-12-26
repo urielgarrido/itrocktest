@@ -9,4 +9,5 @@ interface AuthRepository {
     suspend fun logout(): Flow<Result<Unit>>
     val isUserLoggedIn: Flow<Boolean>
     val userUID: Flow<String?>
+    val userEmail: Flow<String?>
 }

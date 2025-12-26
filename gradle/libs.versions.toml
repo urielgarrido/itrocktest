@@ -25,7 +25,7 @@ datastore = "1.1.1"
 
 nav3Core = "1.0.0"
 lifecycleViewmodelNav3 = "2.10.0"
-kotlinSerialization = "2.0.0"
+kotlinxSerializationJson = "1.6.3"
 kotlinxSerializationCore = "1.8.0"
 
 
@@ -70,7 +70,7 @@ androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", vers
 # Optional add-on libraries
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
-
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -82,5 +82,5 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleService" }
 
 # Optional plugins
-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization"}
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 

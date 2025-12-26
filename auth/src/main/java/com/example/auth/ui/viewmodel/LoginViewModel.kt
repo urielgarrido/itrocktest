@@ -117,7 +117,7 @@ class LoginViewModel @Inject constructor(
                             }
 
                             else -> {
-                                onLoginError(LoginError.InvalidCredentials)
+                                onLoginError(LoginError.UnknownError)
                             }
                         }
                     }.collect()
@@ -139,7 +139,7 @@ class LoginViewModel @Inject constructor(
                                 onLoginError(LoginError.InvalidCredentials)
                             }
                             else -> {
-                                onLoginError(LoginError.InvalidCredentials)
+                                onLoginError(LoginError.UnknownError)
                             }
                         }
                     }.collect()

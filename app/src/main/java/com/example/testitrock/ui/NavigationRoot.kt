@@ -45,15 +45,15 @@ fun NavigationRoot(
     Scaffold(
         bottomBar = {
             val currentRoute = backStack.last()
-            if (bottomItems.any { it.route == currentRoute }) {
+            if (bottomItems.any { bottomItem -> bottomItem.routes.any { it::class == currentRoute::class } }) {
                 NavigationBar {
                     bottomItems.forEach { item ->
-                        val isSelected = currentRoute == item.route
+                        val isSelected = item.routes.any { it::class == currentRoute::class }
                         NavigationBarItem(
                             selected = isSelected,
                             onClick = {
                                 if (!isSelected) {
-                                    backStack.add(item.route)
+                                    backStack.add(item.routes.first())
                                 }
                             },
                             icon = {
@@ -129,9 +129,12 @@ fun NavigationRoot(
                     }
                     entry<AuthNavKeys.Sesion> {
                         val sessionViewModel = hiltViewModel<SessionViewModel>()
+                        val sessionState = sessionViewModel.sessionState.collectAsStateWithLifecycle()
                         val sessionUIEvents = sessionViewModel.sessionUIEvents.collectAsStateWithLifecycle()
                         SessionScreen(
+                            sessionState = sessionState.value,
                             sessionUIEvents = sessionUIEvents.value,
+                            onGetUserEmail = sessionViewModel::getUserEmail,
                             onLogout = sessionViewModel::logout,
                             onGoToInitScreen = {
                                 backStack.removeAll(backStack.toList())
@@ -161,18 +164,20 @@ fun NavigationRoot(
                         val productDetailState = productDetailViewModel.productDetailState.collectAsStateWithLifecycle()
                         val productDetailUIEvents = productDetailViewModel.productDetailUIEvents.collectAsStateWithLifecycle()
                         ProductDetailScreen(
-                            productId = productId,
                             productDetailState = productDetailState.value,
                             productDetailUIEvents = productDetailUIEvents.value,
-                            getProductDetail = productDetailViewModel::getProductDetail,
+                            getProductDetail = {
+                                productDetailViewModel.getProductDetail(productId)
+                            },
                             onProductWant = productDetailViewModel::onProductWant,
                             onResetProductDetailUIEvents = productDetailViewModel::resetProductDetailUIEvents,
                             onGoToPayment = {
-                                backStack.add(ProductNavKeys.Payment)
+                                backStack.add(ProductNavKeys.Payment(productId))
                             }
                         )
                     }
                     entry<ProductNavKeys.Payment> {
+                        val productId = it.productId
                         val paymentViewModel = hiltViewModel<PaymentViewModel>()
                         val paymentState = paymentViewModel.paymentState.collectAsStateWithLifecycle()
                         val paymentUIEvents = paymentViewModel.paymentUIEvents.collectAsStateWithLifecycle()
@@ -183,20 +188,31 @@ fun NavigationRoot(
                             onCardHolderChange = paymentViewModel::updateCardHolder,
                             onExpirationDateChange = paymentViewModel::updateExpirationDate,
                             onCVVChange = paymentViewModel::updateCVV,
+                            cvvVisible = paymentState.value.cvvVisible,
+                            onVisibleCVVChange = paymentViewModel::updateCVVVisible,
                             onResetPaymentUIEvents = paymentViewModel::resetPaymentUIEvents,
-                            onBuyClick = {
+                            onValidateCard = paymentViewModel::validateCard,
+                            onBuy = {
                                 paymentViewModel.buyProduct(userUID!!)
                             },
                             onGoToNextScreen = {
-                                backStack.removeLastOrNull()
-
+                                backStack.removeAll(backStack.toList())
+                                backStack.add(ProductNavKeys.Home)
+                            },
+                            getProductDetail = {
+                                paymentViewModel.getProductDetail(productId)
                             }
                         )
                     }
                     entry<ProductNavKeys.PurchaseHistory> {
                         val purchaseHistoryViewModel = hiltViewModel<PurchaseHistoryViewModel>()
                         val purchaseHistoryState = purchaseHistoryViewModel.purchaseHistoryState.collectAsStateWithLifecycle()
-                        PurchaseHistoryScreen()
+                        PurchaseHistoryScreen(
+                            purchaseHistoryState = purchaseHistoryState.value,
+                            onGetPurchaseHistory = {
+                                purchaseHistoryViewModel.getPurchaseHistory(userUID!!)
+                            }
+                        )
                     }
                 }
             )

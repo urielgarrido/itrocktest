@@ -2,8 +2,10 @@ package com.example.products.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.products.domain.models.Product
+import com.example.products.domain.models.Card
 import com.example.products.domain.usecases.BuyProductUseCase
+import com.example.products.domain.usecases.GetProductDetailUseCase
+import com.example.products.domain.usecases.ValidateCardUseCase
 import com.example.products.ui.errors.PaymentError
 import com.example.products.ui.events.PaymentUIEvents
 import com.example.products.ui.states.PaymentState
@@ -19,7 +21,9 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
-    private val buyProductUseCase: BuyProductUseCase
+    private val buyProductUseCase: BuyProductUseCase,
+    private val getProductDetailUseCase: GetProductDetailUseCase,
+    private val validateCardUseCase: ValidateCardUseCase
 ) : ViewModel() {
 
     private val _paymentState = MutableStateFlow(PaymentState())
@@ -28,13 +32,12 @@ class PaymentViewModel @Inject constructor(
     private val _paymentUIEvents = MutableStateFlow<PaymentUIEvents?>(null)
     val paymentUIEvents = _paymentUIEvents.asStateFlow()
 
-    fun updateProductToBuy(product: Product) {
-        _paymentState.update { it.copy(productToBuy = product) }
-    }
-
     fun updateCardNumber(cardNumber: String) {
-        _paymentState.update { it.copy(cardNumber = cardNumber) }
-        checkFields()
+        val cleanedCardNumber = cardNumber.filter { it.isDigit() }
+        if (cleanedCardNumber.length <= 16) {
+            _paymentState.update { it.copy(cardNumber = cleanedCardNumber) }
+            checkFields()
+        }
     }
 
     fun updateCardHolder(cardHolder: String) {
@@ -43,13 +46,22 @@ class PaymentViewModel @Inject constructor(
     }
 
     fun updateExpirationDate(expirationDate: String) {
-        _paymentState.update { it.copy(expirationDate = expirationDate) }
-        checkFields()
+        val cleanedDate = expirationDate.filter { it.isDigit() }
+        if (cleanedDate.length <= 4) {
+            _paymentState.update { it.copy(expirationDate = cleanedDate) }
+            checkFields()
+        }
     }
 
     fun updateCVV(cvv: String) {
-        _paymentState.update { it.copy(cvv = cvv) }
-        checkFields()
+        if (cvv.length <= 3) {
+            _paymentState.update { it.copy(cvv = cvv) }
+            checkFields()
+        }
+    }
+
+    fun updateCVVVisible(cvvVisible: Boolean) {
+        _paymentState.update { it.copy(cvvVisible = cvvVisible) }
     }
 
     private fun checkFields() {
@@ -60,44 +72,62 @@ class PaymentViewModel @Inject constructor(
 
         val buyButtonEnabled = cardNumber.isNotBlank() && cardHolder.isNotBlank() && expirationDate.isNotBlank() && cvv.isNotBlank()
 
-        val error = when {
-            cardNumber.isBlank() -> PaymentError.EmptyCardNumber
-            cardHolder.isBlank() -> PaymentError.EmptyCardHolder
-            expirationDate.isBlank() -> PaymentError.EmptyExpirationDate
-            cvv.isBlank() -> PaymentError.EmptyCVV
-            else -> null
-        }
-
         _paymentState.update {
             it.copy(
-                buyButtonEnabled = buyButtonEnabled,
-                error = error
+                buyButtonEnabled = buyButtonEnabled
             )
         }
+    }
+
+    fun validateCard() {
+        val cardNumber = _paymentState.value.cardNumber
+        val cardHolder = _paymentState.value.cardHolder
+        val expirationDate = _paymentState.value.expirationDate
+        val cvv = _paymentState.value.cvv
+
+        val card = Card(
+            cardNumber = cardNumber,
+            cardHolder = cardHolder,
+            expirationDate = expirationDate,
+            cvv = cvv
+        )
+        val cardValidationResult = validateCardUseCase(card)
+        _paymentState.update {
+            it.copy(
+                cardValidationResult = cardValidationResult
+            )
+        }
+        onValidateCardEvent()
     }
 
     fun resetPaymentUIEvents() {
         _paymentUIEvents.value = null
     }
 
-    fun onProductBuy() {
-        _paymentUIEvents.value = PaymentUIEvents.OnProductBuy
+    fun onProductBuyEvent() {
+        _paymentUIEvents.value = PaymentUIEvents.OnProductBuySuccess
+    }
+
+    fun onValidateCardEvent() {
+        _paymentUIEvents.value = PaymentUIEvents.OnValidateCard
     }
 
     fun buyProduct(userUID: String) {
         val product = _paymentState.value.productToBuy
         if (product != null) {
+            setLoading()
             viewModelScope.launch {
                 buyProductUseCase(product, userUID).onEach { result ->
                     if (result.isSuccess) {
-                        onProductBuy()
+                        _paymentState.update { it.copy(isLoading = false) }
+                        onProductBuyEvent()
                     } else {
-                        onBuyProductError(PaymentError.BuyProductError)
+                        onPaymentError(PaymentError.BuyProductError)
                     }
                 }.catch { throwable ->
                     when (throwable) {
                         else -> {
-                            onBuyProductError(PaymentError.BuyProductError)
+                            onPaymentError(PaymentError.BuyProductError)
                         }
                     }
                 }.collect()
@@ -105,7 +135,26 @@ class PaymentViewModel @Inject constructor(
         }
     }
 
-    private fun onBuyProductError(paymentError: PaymentError) {
+    fun getProductDetail(id: Long) {
+        setLoading()
+        viewModelScope.launch {
+            getProductDetailUseCase(id).onEach { product ->
+                _paymentState.update { it.copy(productToBuy = product, isLoading = false) }
+            }.catch { throwable ->
+                when (throwable) {
+                    else -> {
+                        onPaymentError(PaymentError.GetProductDetailError)
+                    }
+                }
+            }.collect()
+        }
+    }
+
+    private fun setLoading() {
+        _paymentState.update { it.copy(isLoading = true) }
+    }
+
+    private fun onPaymentError(paymentError: PaymentError) {
         _paymentState.update {
             it.copy(
                 error = paymentError,

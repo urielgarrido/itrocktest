@@ -66,8 +66,8 @@ fun LoginFields(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
             val image = if (passwordVisible)
-                ImageVector.vectorResource(R.drawable.visibility)
-            else ImageVector.vectorResource(R.drawable.visibility_off)
+                ImageVector.vectorResource(com.example.core.R.drawable.visibility)
+            else ImageVector.vectorResource(com.example.core.R.drawable.visibility_off)
 
             val contentDescription = if (passwordVisible)
                 stringResource(R.string.hide_password_content_description)

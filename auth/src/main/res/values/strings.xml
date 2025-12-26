@@ -22,5 +22,9 @@
     <string name="register_account_successful">Tu cuenta ha sido creada correctamente. Ya puedes comenzar a usar la aplicación.</string>
     <string name="register_account_successful_title">¡Registro Exitoso!</string>
     <string name="default_web_client_id" translatable="false">548650284438-aotscmoreqt30b056breut3qsv4flf95.apps.googleusercontent.com</string>
+    <string name="logout_button">Cerrar Sesión</string>
+    <string name="without_email">Sin email</string>
+    <string name="login_error_title">¡Error!</string>
+    <string name="login_error_message">Ocurrió un error inesperado.\nIntenta nuevamente más tarde</string>
 
 </resources>

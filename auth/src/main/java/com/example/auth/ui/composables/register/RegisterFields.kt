@@ -66,8 +66,8 @@ fun RegisterFields(
         trailingIcon = {
             IconButton(onClick = { onPasswordVisibleChange(!passwordVisible) }) {
                 Icon(
-                    painter = if (passwordVisible) painterResource(id = R.drawable.visibility)
-                    else painterResource(id = R.drawable.visibility_off),
+                    painter = if (passwordVisible) painterResource(id = com.example.core.R.drawable.visibility)
+                    else painterResource(id = com.example.core.R.drawable.visibility_off),
                     contentDescription = null
                 )
             }
@@ -95,8 +95,8 @@ fun RegisterFields(
         trailingIcon = {
             IconButton(onClick = { onConfirmPasswordVisibleChange(!confirmPasswordVisible) }) {
                 Icon(
-                    painter = if (confirmPasswordVisible) painterResource(id = R.drawable.visibility)
-                    else painterResource(id = R.drawable.visibility_off),
+                    painter = if (confirmPasswordVisible) painterResource(id = com.example.core.R.drawable.visibility)
+                    else painterResource(id = com.example.core.R.drawable.visibility_off),
                     contentDescription = null
                 )
             }

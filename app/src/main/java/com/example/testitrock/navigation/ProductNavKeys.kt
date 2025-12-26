@@ -1,6 +1,7 @@
 package com.example.testitrock.navigation
 
 import androidx.navigation3.runtime.NavKey
+import com.example.products.domain.models.Product
 import kotlinx.serialization.Serializable
 
 sealed class ProductNavKeys {
@@ -11,5 +12,5 @@ sealed class ProductNavKeys {
     @Serializable
     data object PurchaseHistory : ProductNavKeys(), NavKey
     @Serializable
-    data object Payment : ProductNavKeys(), NavKey
+    data class Payment(val productId: Long) : ProductNavKeys(), NavKey
 }

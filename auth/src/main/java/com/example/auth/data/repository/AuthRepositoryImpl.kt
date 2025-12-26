@@ -94,9 +94,25 @@ class AuthRepositoryImpl @Inject constructor(
         awaitClose {
             firebaseAuth.removeAuthStateListener(authStateListener)
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
-    override val userUID: Flow<String?> = flow {
-        emit(firebaseAuth.currentUser?.uid)
+    override val userUID: Flow<String?> = callbackFlow {
+        val authStateListener = FirebaseAuth.AuthStateListener { auth ->
+            trySend(firebaseAuth.currentUser?.uid)
+        }
+        firebaseAuth.addAuthStateListener(authStateListener)
+        awaitClose {
+            firebaseAuth.removeAuthStateListener(authStateListener)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override val userEmail: Flow<String?> = callbackFlow {
+        val authStateListener = FirebaseAuth.AuthStateListener { auth ->
+            trySend(firebaseAuth.currentUser?.email)
+        }
+        firebaseAuth.addAuthStateListener(authStateListener)
+        awaitClose {
+            firebaseAuth.removeAuthStateListener(authStateListener)
+        }
     }.flowOn(Dispatchers.IO)
 }

@@ -11,6 +11,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +42,7 @@ fun RegisterScreen(
     onResetRegisterUIEvents: () -> Unit,
     onGoToNextScreen: () -> Unit
 ) {
-    var showRegisterSuccessDialog by remember { mutableStateOf(false) }
+    var showRegisterSuccessDialog by rememberSaveable { mutableStateOf(false) }
 
     DisposableEffect(registerUIEvents) {
         when (registerUIEvents) {

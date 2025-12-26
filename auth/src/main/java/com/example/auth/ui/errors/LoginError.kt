@@ -4,4 +4,5 @@ sealed class LoginError {
     object InvalidEmail : LoginError()
     object InvalidPassword : LoginError()
     object InvalidCredentials : LoginError()
+    object UnknownError : LoginError()
 }

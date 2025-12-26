@@ -1,6 +1,7 @@
 package com.example.products.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.products.domain.usecases.GetPurchaseHistoryUseCase
 import com.example.products.ui.errors.PurchaseHistoryError
 import com.example.products.ui.states.PurchaseHistoryState
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class PurchaseHistoryViewModel @Inject constructor(
@@ -21,23 +23,24 @@ class PurchaseHistoryViewModel @Inject constructor(
     private val _purchaseHistoryState = MutableStateFlow(PurchaseHistoryState())
     val purchaseHistoryState = _purchaseHistoryState.asStateFlow()
 
-    suspend fun getPurchaseHistory(userUID: String) {
+    fun getPurchaseHistory(userUID: String) {
         setLoading()
-        getPurchaseHistoryUseCase(userUID).onEach { purchases ->
-            _purchaseHistoryState.update {
-                it.copy(
-                    purchases = purchases,
-                    isLoading = false
-                )
-            }
-        }.catch { throwable ->
-            when (throwable) {
-                else -> {
-                    onPurchaseHistoryError(PurchaseHistoryError.GetPurchaseHistoryError)
+        viewModelScope.launch {
+            getPurchaseHistoryUseCase(userUID).onEach { purchases ->
+                _purchaseHistoryState.update {
+                    it.copy(
+                        purchases = purchases,
+                        isLoading = false
+                    )
                 }
-            }
-        }.collect()
-
+            }.catch { throwable ->
+                when (throwable) {
+                    else -> {
+                        onPurchaseHistoryError(PurchaseHistoryError.GetPurchaseHistoryError)
+                    }
+                }
+            }.collect()
+        }
     }
 
     private fun setLoading() {

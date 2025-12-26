@@ -9,10 +9,12 @@ import com.example.products.data.remote.api.FakeStoreApi
 import com.example.products.data.remote.api.PlatziFakeStoreApi
 import com.example.products.data.repository.ProductsRepositoryImpl
 import com.example.products.data.repository.PurchaseRepositoryImpl
+import com.example.products.data.validation.LocalCardValidation
 import com.example.products.domain.dataSource.ProductsDataSourceFactory
 import com.example.products.domain.dataSource.PurchaseRemoteDataSource
 import com.example.products.domain.repository.ProductsRepository
 import com.example.products.domain.repository.PurchaseRepository
+import com.example.products.domain.validation.CardValidator
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -120,5 +122,9 @@ object ProductsModule {
     @Singleton
     fun providesPurchaseRepository(purchaseRemoteDataSource: PurchaseRemoteDataSource): PurchaseRepository =
         PurchaseRepositoryImpl(purchaseRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideCardValidator(): CardValidator = LocalCardValidation()
 
 }

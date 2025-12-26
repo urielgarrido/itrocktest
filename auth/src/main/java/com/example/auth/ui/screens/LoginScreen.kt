@@ -21,6 +21,7 @@ import com.example.auth.ui.composables.login.LoginButton
 import com.example.auth.ui.composables.login.LoginFields
 import com.example.auth.ui.composables.login.LoginGoogleButton
 import com.example.auth.ui.composables.login.ToRegisterButton
+import com.example.auth.ui.errors.LoginError
 import com.example.auth.ui.events.LoginUIEvents
 import com.example.auth.ui.states.LoginState
 import com.example.auth.ui.utils.LoginProvider
@@ -53,6 +54,10 @@ fun LoginScreen(
         onDispose {
             onResetLoginUIEvents()
         }
+    }
+
+    if (loginState.error == LoginError.UnknownError) {
+
     }
 
     Scaffold(
